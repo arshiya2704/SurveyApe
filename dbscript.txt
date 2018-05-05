@@ -1,0 +1,24 @@
+create database
+
+create database surveyape;
+
+
+
+create table user
+
+create table user ( id int not null auto_increment, name varchar(25), password varchar(25), email varchar(30), acreated timestamp, verified bool, primary key (id));
+
+
+create table survey
+
+create table survey ( id int not null auto_increment, uid int, ctimestamp timestamp,type int,  primary key (id), FOREIGN KEY (uid) REFERENCES user(id));
+
+
+create question_type
+
+create table question_type ( id int not null auto_increment, type varchar(30) , primary key (id));  
+
+
+create questions
+
+create table questions (id int not null auto_increment, surveyid int, questiontype int, question varchar(100), options varchar(100), primary key (id), foreign key (surveyid) references survey(id), foreign key (questiontype) references question_type(id));
