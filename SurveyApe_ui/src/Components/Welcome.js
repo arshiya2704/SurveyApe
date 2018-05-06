@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Route,withRouter,Link} from 'react-router-dom';
 import * as API from '../api/API';
 import  '../App.css';
+import Register from "./Register"
 
 class Login extends Component {
     constructor() {
@@ -36,7 +37,8 @@ class Login extends Component {
                         this.props.history.push("/welcome");
                     }
                     else alert(res.message);
-                });}
+                });
+        }
     };
 
     render() {
@@ -64,7 +66,7 @@ class Login extends Component {
                                                 </form>
                                             </div>
                                             <div className="modal-footer">
-                                                <Link to="/register">Or create an account</Link><br/><br/>
+                                                <Link onClick={this.forceUpdate} to="/register">Or create an account</Link><br/><br/>
                                             </div>
                                         </div>
                                     </div>
@@ -72,6 +74,11 @@ class Login extends Component {
                             </div>
                         </div>
 
+                    </div>
+                )}/>
+                <Route exact path="/register" render={() => (
+                    <div>
+                        <Register/>
                     </div>
                 )}/>
             </div>

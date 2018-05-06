@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.logging.XMLFormatter;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3002")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/users")
 public class UsersResource {
 
@@ -59,29 +59,29 @@ public class UsersResource {
                 return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
             }
         }
-    @PostMapping(value = "register")
+    @PostMapping(value = "/register")
     public ResponseEntity <ServiceResponse> registerUser(@RequestBody final Users user){
         System.out.println("register called");
 
         System.out.println(user.getFirstname());
         System.out.println(user.getLastname());
         System.out.println(user.getPwd());
-//        System.out.println(user.getUsername());
-//
-//
-//        Users u = new Users();
-//        u.setEmail(user.getUsername());
-//        u.setFname(user.getFname());
-//        u.setLname(user.getLname());
-//        u.setPwd(user.getPassword());
-//
-//        usersRepository.save(u);
-//        ServiceResponse r=new ServiceResponse();
-//        r.setMessage("User Registered!!");
-//        return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
-//        //return usersRepository.findAll();
+        System.out.println(user.getEmail());
+
+
+        Users u = new Users();
+        u.setEmail(user.getEmail());
+        u.setFirstname(user.getFirstname());
+        u.setLastname(user.getLastname());
+        u.setPwd(user.getPwd());
+
+        usersRepository.save(u);
+        ServiceResponse r=new ServiceResponse();
+        r.setMessage("User Registered!!");
+        return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
+        //return usersRepository.findAll();
 //        //return Ht;
-        return null;
+//        return null;
     }
 
 }
