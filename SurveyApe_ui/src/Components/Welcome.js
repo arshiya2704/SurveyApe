@@ -3,6 +3,7 @@ import {Route,withRouter,Link} from 'react-router-dom';
 import * as API from '../api/API';
 import  '../App.css';
 import Register from "./Register"
+import Home from "./Home"
 
 class Login extends Component {
     constructor() {
@@ -34,7 +35,7 @@ class Login extends Component {
                             {
                                 tag : res.email
                             });
-                        this.props.history.push("/welcome");
+                        this.props.history.push("/home");
                     }
                     else alert(res.message);
                 });
@@ -79,6 +80,11 @@ class Login extends Component {
                 <Route exact path="/register" render={() => (
                     <div>
                         <Register/>
+                    </div>
+                )}/>
+                <Route exact path="/home" render={() => (
+                    <div>
+                        <Home tag={this.state.tag}/>
                     </div>
                 )}/>
             </div>
