@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.json.*;
 
+import java.util.*;
+import javax.mail.*;
+import javax.mail.PasswordAuthentication;
+import javax.mail.internet.*;
+
 import javax.servlet.http.HttpServletResponse;
 
 import javax.validation.Valid;
@@ -60,7 +65,7 @@ public class UsersResource {
             }
         }
     @PostMapping(value = "/register")
-    public ResponseEntity <ServiceResponse> registerUser(@RequestBody final Users user){
+    public ResponseEntity <ServiceResponse> registerUser(@RequestBody final Users user) {
         System.out.println("register called");
 
         System.out.println(user.getFirstname());
@@ -76,12 +81,50 @@ public class UsersResource {
         u.setPwd(user.getPwd());
 
         usersRepository.save(u);
-        ServiceResponse r=new ServiceResponse();
+        ServiceResponse r = new ServiceResponse();
         r.setMessage("User Registered!!");
+
+        sendEmail(user.getEmail());
         return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
-        //return usersRepository.findAll();
-//        //return Ht;
-//        return null;
     }
 
+        public static void sendEmail(String uname) {
+            final String username = "anshitanshit123@gmail.com";
+            final String password = "surveyape";
+            //properties
+            Properties pro = new Properties();
+            pro.put("mail.smtp.auth", "true");
+            pro.put("mail.smtp.starttls.enable", "true");
+            pro.put("mail.smtp.host", "smtp.gmail.com");
+            pro.put("mail.smtp.port", "587");
+
+            //session
+            Session session = Session.getInstance(pro,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+            try {
+                //send
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress("anshitanshit123@gmail.com"));
+                message.setRecipients(Message.RecipientType.TO, //use uname
+                        InternetAddress.parse(uname));
+                //compose
+                message.setSubject("Verify the Email");
+                message.setText("fin,"
+                        + "Visit http://localhost:8080/verify/uname="+uname);
+                Transport.send(message);
+                System.out.println("Done");
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }
 }
+
+        //return usersRepository.findAll();
+//        //return Ht;
+//        return null
+
+
