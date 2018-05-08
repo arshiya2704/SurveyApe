@@ -39,6 +39,9 @@ class Login extends Component {
                     }
                     else alert(res.message);
                 });
+            setTimeout(function(){
+                window.location.reload(1);
+            }, 500)
         }
     };
 
@@ -74,7 +77,6 @@ class Login extends Component {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 )}/>
                 <Route exact path="/register" render={() => (

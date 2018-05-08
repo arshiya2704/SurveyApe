@@ -31,3 +31,18 @@ export const register = (payload) =>
             console.log("This is error");
             return error;});
 
+export const postSurvey = (payload) =>
+    fetch(`${apis}/surveys/addSurvey`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"survey":{"name":payload.survey.name,"type":payload.survey.type,"users":payload.survey.users},"questions":payload.survey.questions})
+    }).then(res => {
+        return res.json();
+    })
+        .catch(error => {
+            console.log("This is error");
+            return error;});
+

@@ -12,35 +12,37 @@ import java.util.*;
 
 
 @Entity
-@XmlRootElement(name = "Users")
-@JsonRootName(value = "Users")
+@XmlRootElement(name = "User")
+@JsonRootName(value = "User")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Users implements Serializable {
+public class User implements Serializable {
     @Id
-    @Column(length = 255)
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "firstname")
     private String firstname;
     @Column(name = "lastname")
     private String lastname;
-    @Column(name = "email")
-    private String email;
     @Column(name = "pwd")
     private String pwd;
-    public Users(){
+    @Column(name = "verified")
+    private int verified;
+
+    public int getVerified() {
+        return verified;
+    }
+
+    public void setVerified(int verified) {
+        this.verified = verified;
+    }
+
+    public User(){
+        verified=0;
 
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFirstname() {
         return firstname;
