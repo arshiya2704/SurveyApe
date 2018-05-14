@@ -16,9 +16,9 @@ package com.example.SurveyApe_server.model;
 public class Survey {
 
     String users;
-//    String publish;
-//    String end;
-//    String email;
+    String publish;
+    String end;
+    String email;
     String type;
     @Id
     String name;
@@ -29,6 +29,30 @@ public class Survey {
 
     public void setUsers(String users) {
         this.users = users;
+    }
+
+    public String getPublish() {
+        return publish;
+    }
+
+    public void setPublish(String publish) {
+        this.publish = publish;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getType() {

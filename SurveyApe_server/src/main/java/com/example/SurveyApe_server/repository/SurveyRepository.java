@@ -2,6 +2,7 @@ package com.example.SurveyApe_server.repository;
 
 import java.util.ArrayList;
 
+import com.example.SurveyApe_server.model.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,4 +13,5 @@ import com.example.SurveyApe_server.model.Survey;
 
 public interface SurveyRepository extends JpaRepository<Survey, Long> {
         public Survey findByName(String name);
+        public ArrayList<Survey> findAllByEmail(String email);
 }

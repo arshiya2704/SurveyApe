@@ -4,6 +4,13 @@ import * as API from '../api/API';
 import  '../App.css';
 import Register from "./Register"
 import Home from "./Home"
+import Survey from "./Survey"
+import ShowSurvey from "./ShowSurvey"
+import {reactLocalStorage} from 'reactjs-localstorage';
+
+// reactLocalStorage.set('var', true);
+// reactLocalStorage.get('var', true);
+
 
 class Login extends Component {
     constructor() {
@@ -13,8 +20,11 @@ class Login extends Component {
             userData: {
                 email: '',
                 password: ''
-            }
+            },
+
         }};
+
+
 
     handleChange (propertyName, event) {
         const userData = this.state.userData;
@@ -24,18 +34,20 @@ class Login extends Component {
 
     handleSubmit = (userdata) => {
         if(userdata.userData.email === '' || userdata.userData.password === '') {
-            this.props.history.push("/error");
+            alert('Please enter the details');
         }
         else{
             API.login(userdata)
                 .then((res) => {
                     console.log(res);
                     if (res.message === 'logged in'){
+                        reactLocalStorage.setObject('var',  'arshiyasethi04@gmail.com');
+
                         this.setState(
                             {
                                 tag : res.email
                             });
-                        this.props.history.push("/home");
+                        this.props.history.push("home");
                     }
                     else alert(res.message);
                 });
@@ -87,6 +99,16 @@ class Login extends Component {
                 <Route exact path="/home" render={() => (
                     <div>
                         <Home tag={this.state.tag}/>
+                    </div>
+                )}/>
+                <Route exact path="/takesurvey" render={() => (
+                    <div>
+                        <Survey/>
+                    </div>
+                )}/>
+                <Route exact path="/showsurvey/:formname" render={() => (
+                    <div>
+                        <ShowSurvey/>
                     </div>
                 )}/>
             </div>

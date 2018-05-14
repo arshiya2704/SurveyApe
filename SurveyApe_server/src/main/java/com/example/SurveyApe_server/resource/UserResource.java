@@ -20,7 +20,7 @@ import javax.mail.internet.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/users")
 public class UserResource {
 
@@ -33,39 +33,100 @@ public class UserResource {
         return userRepository.findAll();
     }
 
-    @PostMapping(value = "/login", produces=MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<?> login(@RequestBody final User user) {
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <ServiceResponse> login(@RequestBody final User user) {
 
         System.out.println("login called");
         System.out.println(user.getPwd());
         System.out.println(user.getEmail());
-        String email= user.getEmail();
-        User u = userRepository.findFirstByEmailAndPwd(user.getEmail(),user.getPwd());
+        String email = user.getEmail();
+        User u = userRepository.findByEmail(user.getEmail());
+
+        if(u == null){
+            System.out.println("User does not exist!!");
+            ServiceResponse r=new ServiceResponse();
+            r.setMessage("User does not exist!!");
+            return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else{
+            if(!user.getPwd().equals(u.getPwd())){
+                System.out.println("Incorrect Password!!");
+                ServiceResponse r=new ServiceResponse();
+                r.setMessage("Incorrect Password!!");
+                return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            else if(u.getVerified()!=0){
+                    System.out.println("Verify first!!");
+                    ServiceResponse r=new ServiceResponse();
+                    r.setMessage("Verify first!!");
+                    return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                else{
+                System.out.println("logged In!!");
+                ServiceResponse r=new ServiceResponse();
+                r.setMessage("logged in");
+                return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        }
+
+
+//            System.out.println("Logged In");
+//            ServiceResponse r=new ServiceResponse();
+//            r.setMessage("logged in");
+//            return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
+
+    }
+
+
+        /*
+
         if(u == null){
             System.out.println("User does not exist!!");
             ServiceResponse r=new ServiceResponse();
             r.setMessage("User does not exist!!");
             return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);}
         else{
-            System.out.println("Logged In");
-            ServiceResponse r=new ServiceResponse();
-            r.setMessage("logged in");
-            return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
-        }
-    }
+            if(u.getPwd()!=user.getPwd()) {
+                ServiceResponse r = new ServiceResponse();
+                r.setMessage("Wrong password");
+                return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);}
+            else if(u.getVerified()==0) {
+                System.out.println("Logged In");
+                ServiceResponse r = new ServiceResponse();
+                r.setMessage("logged in");
+                return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK); }
+
+                else {
+                    ServiceResponse r = new ServiceResponse();
+                    r.setMessage("Verify First");
+                    return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
+                }
+
+            }
+*/
 
 
-    @Autowired
-    UserRepository ur;
+
+
+
+
+
+
+
+
+
+
 
     @GetMapping(value = "/verify")
     public String verifyUser(@RequestParam("uname") String uname, @RequestParam("code") Integer code) {
-        User a = ur.findByEmail(uname);
+        User a = userRepository.findByEmail(uname);
+
         if(a.getVerified() == code) {
 
             a.setVerified(0);
             //System.out.println(uname);
-            ur.save(a);
+            userRepository.save(a);
             sendConfirmation (a.getEmail());
             return "success";
         }

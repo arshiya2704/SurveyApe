@@ -8,7 +8,7 @@ class Question extends Component {
         super();
         this.state = {
 
-            qtype:'mcq',
+            qtype:'mcqS',
             opt1:'',
             opt2:'',
             opt3:'',
@@ -130,6 +130,46 @@ console.log(this.props.index);
                         <span className="glyphicon glyphicon-star-empty" style={fileStyle1} aria-hidden="true"></span>
                         <span className="glyphicon glyphicon-star-empty" style={fileStyle1} aria-hidden="true"></span>
                         <span className="glyphicon glyphicon-star-empty" style={fileStyle1} aria-hidden="true"></span>
+                    </div>:(options === 'mcqM')?
+                    <div>
+                        <button style={style5} className="btn">
+                            <input type="checkbox"></input>
+                        </button>
+                        <input
+                            onChange={this.handleChange.bind(this, 'opt1')} value={this.state.opt1}
+                            style={style5}
+                            placeholder="Option 1"
+                        />
+                        <br/>
+                        <br/>
+                        <button style={style5} className="btn">
+                            <input type="checkbox"></input>
+                        </button>
+                        <input
+                            onChange={this.handleChange.bind(this, 'opt2')} value={this.state.opt2}
+                            style={style5}
+                            placeholder="Option 2"
+                        />
+                        <br/>
+                        <br/>
+                        <button style={style5} className="btn">
+                            <input type="checkbox"></input>
+                        </button>
+                        <input
+                            onChange={this.handleChange.bind(this, 'opt3')} value={this.state.opt3}
+                            style={style5}
+                            placeholder="Option 3"
+                        />
+                        <br/>
+                        <br/>
+                        <button style={style5} className="btn">
+                            <input type="checkbox"></input>
+                        </button>
+                        <input
+                            onChange={this.handleChange.bind(this, 'opt4')} value={this.state.opt4}
+                            style={style5}
+                            placeholder="Option 4"
+                        />
                     </div>:
                     <div>
                         <button style={style5} className="btn">
@@ -184,7 +224,8 @@ console.log(this.props.index);
                         <button style={style4} className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Response Type
                             <span className="caret"></span></button>
                         <ul className="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1" >
-                            <li><button type="link" className="btn btn-link" onClick={this.handleChange.bind(this, 'qtype')} value='mcq'>Multiple</button></li>
+                            <li><button type="link" className="btn btn-link" onClick={this.handleChange.bind(this, 'qtype')} value='mcqS'>Text Single</button></li>
+                            <li><button type="link" className="btn btn-link" onClick={this.handleChange.bind(this, 'qtype')} value='mcqM'>Text Multiple</button></li>
                             <li><button type="link" className="btn btn-link" onClick={this.handleChange.bind(this, 'qtype')} value='text'>Text</button></li>
                             <li><button type="link" className="btn btn-link" onClick={this.handleChange.bind(this, 'qtype')} value='star'>Star Rating</button></li>
                         </ul>

@@ -4,9 +4,18 @@ import '../App.css';
 import * as API from '../api/API';
 import img from '../img2.png';
 import Question from "./Question";
-
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import Navbar from "./Navbar";
+import File from "./File";
+import 'react-datepicker/dist/react-datepicker.css';
+import {reactLocalStorage} from 'reactjs-localstorage';
 
 class Home extends Component {
+
+    // static propTypes = {
+    //     history: PropTypes.object.isRequired
+    // };
 
     constructor(props) {
         super(props);
@@ -15,13 +24,37 @@ class Home extends Component {
                 name: '',
                 questions: [],
                 type:'',
-                users:''
+                users:'',
+                publish: moment(),
+                end:moment(),
+                email:reactLocalStorage.getObject('var')
             },
+            surveyList:[]
+
         };
+        this.init();
         this.handleQueArr = this.handleQueArr.bind(this);
+        this.handleChange2 = this.handleChange2.bind(this);
         };
 
 
+    getDate(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        }
+
+        if(mm<10) {
+            mm = '0'+mm
+        }
+
+        today = mm + '/' + dd + '/' + yyyy;
+        return today;
+    }
 
     handleChange1 (propertyName, event) {
         event.preventDefault();
@@ -30,8 +63,22 @@ class Home extends Component {
         this.setState({ survey: survey });
     }
 
+    handleChange2(date, event) {
+        event.preventDefault();
+        this.setState({ survey: { ...this.state.survey, end: date} })
+    }
+
     init() {
         console.log("component check");
+        //alert(reactLocalStorage.getObject('var'));
+        console.log('user'+this.props.tag);
+        API.getSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    surveyList: data
+                });
+            });
     }
 
     addQue(){
@@ -55,15 +102,24 @@ class Home extends Component {
    //      })
     }
 
+    addSur(){
+        this.props.history.push("home");
+    }
+
 
     addSurvey = (survey) => {
             API.postSurvey(survey)
                 .then((res) => {
                     console.log(res);
-                    // alert(res.message);
-                    // this.props.history.push("/");
+                     alert('Survey created successfully!!');
+                     // window.location.reload();
                 });
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 500)
     };
+
+
 
     render() {
         var buttons={
@@ -96,10 +152,13 @@ class Home extends Component {
             float:"right"
         };
         var style4={
-            float:"right"
+            float:"left",
+            width:"180px",
+            backgroundColor:"#D8BFD8",
+            backgroundSize:"100%",
+            minHeight:"600px"
         };
         var style5={
-            width:"200px",
             float:"left"
         };
         var fileStyle1={
@@ -117,7 +176,7 @@ class Home extends Component {
                 <div className="row" style={style}>
                     {/*<button style={style3} className="btn btn-primary" onClick={() => this.addSurvey(this.state)}>Send</button>*/}
                     <div className="dropdown">
-                        <button style={style4} className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Send
+                        <button style={style3} className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Send
                             <span className="caret"></span></button>
                         <ul className="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1" >
                             {/*<div className="radio-group">*/}
@@ -139,13 +198,38 @@ class Home extends Component {
                                         General
                                     </label>
                                 </div></li>
+                            <br/>
                             <li>
-                                Enter email addresses:
+                                <text style={style5}> Enter semicolon separated email addresses:</text>
+                                <br/>
                                 <textarea
                                     onChange={this.handleChange1.bind(this, 'users')} value={this.state.survey.users}
                                     style={style2}
-                                    placeholder="Form Name"
+                                    placeholder="Recipients"
                                 />
+                            </li>
+                            <li>
+                                <text style={style5}> Please choose the publish date:</text>
+                                <br/>
+                                <br/>
+                                {/*<DatePicker*/}
+                                {/*selected={this.state.end}*/}
+                                {/*onChange={this.handleChange2.bind(this, 'end')}*/}
+                                {/*placeholderText={"mm/dd/yyyy"} />*/}
+
+                                <input type="date"
+                                       placeholder="Check-in"  onChange={this.handleChange1.bind(this, 'publish')}/>
+                            </li>
+                            <br/>
+                            <li>
+                                <text style={style5}> Please choose the end date:</text>
+                                {/*<DatePicker*/}
+                                    {/*selected={this.state.end}*/}
+                                    {/*onChange={this.handleChange2.bind(this, 'end')}*/}
+                                {/*placeholderText={"mm/dd/yyyy"} />*/}
+
+                                <input type="date"
+                                       placeholder="Check-in"  onChange={this.handleChange1.bind(this, 'end')}/>
                             </li>
                             <li>
                                 <button style={style3} className="btn btn-primary" onClick={() => this.addSurvey(this.state)}>Publish</button>
@@ -156,7 +240,10 @@ class Home extends Component {
                     </div>
                 </div>
                 <div className="row" style={style1}>
-                    <div className="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6" style={buttons}>
+                    <div style={style4}>
+                        <Navbar surveyList={this.state.surveyList}/>
+                    </div>
+                    <div className="col-md-6 col-md-offset-1 col-sm-6 col-sm-offset-1 col-xs-6" style={buttons}>
                         <form className="form">
                             <div className="form-group">
                                 <textarea
@@ -165,7 +252,7 @@ class Home extends Component {
                                     placeholder="Form Name"
                                 />
                                 <button className="btn btn-primary" onClick={(e) => (e.preventDefault(), this.addQue())}>+</button>
-                                 <br/>
+                                <br/>
                                 <br/>
                                 <hr/>
                                 <hr/>

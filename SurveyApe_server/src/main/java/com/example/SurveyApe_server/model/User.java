@@ -39,7 +39,7 @@ public class User implements Serializable {
     }
 
     public User(){
-        verified=0;
+//        verified=0;
 
     }
 

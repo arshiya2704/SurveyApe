@@ -38,7 +38,7 @@ export const postSurvey = (payload) =>
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"survey":{"name":payload.survey.name,"type":payload.survey.type,"users":payload.survey.users},"questions":payload.survey.questions})
+        body: JSON.stringify({"survey":{"name":payload.survey.name,"type":payload.survey.type,"users":payload.survey.users,"email":payload.survey.email,"publish":payload.survey.publish,"end":payload.survey.end},"questions":payload.survey.questions})
     }).then(res => {
         return res.json();
     })
@@ -46,3 +46,68 @@ export const postSurvey = (payload) =>
             console.log("This is error");
             return error;});
 
+
+
+export const getSurvey = (payload) =>
+    fetch(`${apis}/surveys/getSurvey`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res.json();
+    })
+        .catch(error => {
+            console.log("This is error");
+            return error;});
+
+export const getUniqueSurvey = (payload) =>
+    fetch(`${apis}/surveys/getUniqueSurvey`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"survey":{"name":payload.sname},"user":{"email":payload.email}})
+    }).then(res => {
+        return res.json();
+    })
+        .catch(error => {
+            console.log("This is error");
+            return error;});
+
+
+
+
+export const getSurveys = (payload) =>
+    fetch(`${apis}/surveys/getSurveys`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).then(res => {
+        return res.json();
+    })
+        .catch(error => {
+            console.log("This is error");
+            return error;});
+
+
+export const submitSurvey = (payload) =>
+    fetch(`${apis}/surveys/addResponse`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"responses":payload})
+    }).then(res => {
+        return res.json();
+    })
+        .catch(error => {
+            console.log("This is error");
+            return error;});
