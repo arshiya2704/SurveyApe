@@ -3,6 +3,10 @@ import {withRouter} from 'react-router-dom';
 import img from '../pic.jpg';
 import * as API from '../api/API';
 //import logo from '../logo.png';
+import {reactLocalStorage} from 'reactjs-localstorage';
+import   ReactCodeInput from 'react-code-input';
+
+
 
 class Register extends Component {
     constructor() {
@@ -12,52 +16,81 @@ class Register extends Component {
                 Fname: '',
                 Lname: '',
                 email: '',
-                password: ''
-            }
+                password: '',
+                code:''
+            },
+            isValidated: false
         };
     };
+
+
     handleChange (propertyName, event) {
         const formData = this.state.formData;
         formData[propertyName] = event.target.value;
         this.setState({ formData: formData });
     }
 
+    handleChange1 (propertyName, event) {
+        const formData = this.state.formData;
+        formData[propertyName] = event;
+        this.setState({ formData: formData });
+    }
+
     handleSubmit = (formdata) => {
         if(formdata.formData.Fname === '' || formdata.formData.email === '' || formdata.formData.password === '' ) {
             alert("Please enter the details");
-            this.props.history.push("register");
+            this.props.history.push("/register");
+            window.location.reload(1);
         }
         else{
             API.register(formdata)
+
                 .then((res) => {
                     console.log(res);
+
+                    if(res.message=== 'User already exists!! Please login.'){
+                        alert(res.message);
+                        this.props.history.push("/");
+                    }
                     //alert(res.message);
                    // this.props.history.push("/verify");
                 });}
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 500)
     };
 
     handleSubmit1 = (formdata) => {
-        if(formdata.formData.Fname === '' || formdata.formData.email === '' || formdata.formData.password === '' ) {
-            e.preventDefault();
-            this.props.history.push("/error1");
-        }
-        else{
-            API.register(formdata)
+        const val={
+            email: formdata.formData.email,
+            verified: formdata.formData.code
+        };
+            API.verify(val)
                 .then((res) => {
                     console.log(res);
-                    //alert(res.message);
-                    // this.props.history.push("/verify");
-                });}
-    };
+                    if(res.message=== 'true'){
+                        reactLocalStorage.setObject('var', formdata.formData.email );
+                        this.props.history.push("/home");
+                        window.location.reload(1);
+                    }
+                    else{
+                        alert("Incorrect verification code!!");
+                        this.props.history.push("/");
+                        window.location.reload(1);
+                    }
+
+                });};
+
+
+
 
     render() {
+
+
         var pos={
             marginTop: "120px"
         };
-        var style1={
-            width:"60px",
-            marginRight:"10px"
-        };
+
         return (
             <div className="row justify-content-md-center" style={pos}>
                 <div className="col">
@@ -68,11 +101,11 @@ class Register extends Component {
                 <div className="col-md-4 col-md-offset-0 col-sm-5 col-sm-offset-0 col-xs-6">
                     Create an account
                     <hr/>
-                    <form action="">
+                    <form>
                         <input type="text" className="form-control" placeholder="First name" onChange={this.handleChange.bind(this, 'Fname')} value={this.state.formData.Fname}/><br/>
                         <input type="text" className="form-control" placeholder="Surname" onChange={this.handleChange.bind(this, 'Lname')} value={this.state.formData.Lname}/><br/>
-                        <input type="email" className="form-control" placeholder="Email" onChange={this.handleChange.bind(this, 'email')} value={this.state.formData.email}/><br/>
-                        <input type="password" className="form-control" placeholder="Password" onChange={this.handleChange.bind(this, 'password')} value={this.state.formData.password}/><br/><br/>
+                        <input type="email" className="form-control" placeholder="Email" onChange={this.handleChange.bind(this, 'email')} value={this.state.formData.email} /><br/>
+                        <input type="password" className="form-control" placeholder="Password" onChange={this.handleChange.bind(this, 'password')} value={this.state.formData.password} /><br/><br/>
                         <button type="submit" className="btn btn-warning" data-toggle="modal" data-target="#myModal" onClick={(e) => (e.preventDefault(), this.handleSubmit(this.state))}>Create an account</button>
                         <div className="modal fade" id="myModal" role="dialog">
                             <div className="modal-dialog">
@@ -83,11 +116,7 @@ class Register extends Component {
                                     </div>
                                     <div className="modal-body">
                                         <form action="" className="form-group">
-                                                <textarea style={style1}></textarea>
-                                                <textarea style={style1}></textarea>
-                                                <textarea style={style1}></textarea>
-                                                <textarea style={style1}></textarea>
-
+                                            <ReactCodeInput type='text' fields={4} onChange={this.handleChange1.bind(this, 'code')} value={this.state.formData.code}  />
                                         </form>
                                     </div>
                                     <div className="modal-footer">
@@ -102,5 +131,6 @@ class Register extends Component {
         );
     }
 }
+
 
 export default withRouter(Register);

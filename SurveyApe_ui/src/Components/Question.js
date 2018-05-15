@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import * as API from '../api/API';
-import {Route,withRouter,Link} from 'react-router-dom';
+
+import {withRouter} from 'react-router-dom';
 
 class Question extends Component {
 
@@ -67,23 +67,7 @@ console.log(this.props.index);
 
 
     render() {
-        var buttons={
-            width:"770px",
-            height:"500px",
-            backgroundColor:"#FFFFFF",
-        };
 
-        var style={
-            // marginTop: "180px",
-            backgroundColor: "#8A2BE2",
-            height: "200px",
-            position:"center"
-        };
-        var style1={
-            // marginTop: "180px",
-            backgroundColor: "#E6E6FA",
-            height: "600px"
-        };
         var style2={
             border:"none",
             float:"left",

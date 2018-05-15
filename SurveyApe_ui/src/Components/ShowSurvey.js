@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Link,withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import '../App.css';
 import * as API from '../api/API';
-import img from '../img2.png';
 import QuestionShow from "./QuestionShow";
 import NavBarShow from "./NavBarShow";
 import {reactLocalStorage} from 'reactjs-localstorage';
@@ -79,24 +78,6 @@ class ShowSurvey extends Component {
             border:"none",
             float:"left",
             width:"650px"
-        };
-        var style3={
-            float:"right"
-        };
-        var style4={
-            float:"right"
-        };
-        var style5={
-            width:"200px",
-            float:"left"
-        };
-        var fileStyle1={
-            float:'left',
-            color: 'skyblue',
-            marginRight: '10px',
-            marginLeft: '10px',
-            padding: '3px',
-            fontSize: '20px'
         };
 
 

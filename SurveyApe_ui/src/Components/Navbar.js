@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as API from '../api/API';
-import {Route,withRouter,Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 class Navbar extends Component {
 
@@ -64,7 +64,7 @@ class Navbar extends Component {
         var style4={
             float:"left",
             width:"180px",
-            backgroundColor:"#D8BFD8",
+            backgroundColor:"#e9e2f8",
             backgroundSize:"100%",
             minHeight:"600px"
         };

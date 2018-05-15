@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Link,withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import '../App.css';
 import * as API from '../api/API';
-import img from '../img2.png';
+
 import QuestionTake from "./QuestionTake";
 
 
@@ -139,22 +139,6 @@ class Survey extends Component {
         var style3={
             float:"right"
         };
-        var style4={
-            float:"right"
-        };
-        var style5={
-            width:"200px",
-            float:"left"
-        };
-        var fileStyle1={
-            float:'left',
-            color: 'skyblue',
-            marginRight: '10px',
-            marginLeft: '10px',
-            padding: '3px',
-            fontSize: '20px'
-        };
-
 
         return (
             <div className="container-fluid">

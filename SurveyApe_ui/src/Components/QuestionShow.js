@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
-import * as API from '../api/API';
-import {Route,withRouter,Link} from 'react-router-dom';
+
+import {withRouter} from 'react-router-dom';
 
 class QuestionShow extends Component {
 
-    constructor() {
-        super();
-        // this.handleChange = this.handleChange.bind(this);
-        // this.submitHandler = this.submitHandler.bind(this);
 
-    };
 
 
 
@@ -17,23 +12,7 @@ class QuestionShow extends Component {
 
 
     render() {
-        var buttons={
-            width:"770px",
-            height:"500px",
-            backgroundColor:"#FFFFFF",
-        };
 
-        var style={
-            // marginTop: "180px",
-            backgroundColor: "#8A2BE2",
-            height: "200px",
-            position:"center"
-        };
-        var style1={
-            // marginTop: "180px",
-            backgroundColor: "#E6E6FA",
-            height: "600px"
-        };
         var style2={
             border:"none",
             float:"left",
@@ -43,9 +22,6 @@ class QuestionShow extends Component {
             border:"none",
             float:"left",
             width:"500px"
-        };
-        var style4={
-            float:"right"
         };
         var style5={
             width:"200px",

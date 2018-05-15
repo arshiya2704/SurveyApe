@@ -131,8 +131,8 @@ public class SurveyResource {
     }
 
     public static void sendEmail(String link,String uname) {
-        final String username = "anshitanshit123@gmail.com";
-        final String password = "surveyape";
+        final String username = "surveyape07@gmail.com";
+        final String password = "SurveyApe";
         //properties
         Properties pro = new Properties();
         pro.put("mail.smtp.auth", "true");
@@ -149,7 +149,7 @@ public class SurveyResource {
         try {
             //send
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("anshitanshit123@gmail.com"));
+            message.setFrom(new InternetAddress("surveyape07@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, //use uname
                     InternetAddress.parse(uname));
             //compose

@@ -28,13 +28,13 @@ public class User implements Serializable {
     @Column(name = "pwd")
     private String pwd;
     @Column(name = "verified")
-    private int verified;
+    private String verified;
 
-    public int getVerified() {
+    public String getVerified() {
         return verified;
     }
 
-    public void setVerified(int verified) {
+    public void setVerified(String verified) {
         this.verified = verified;
     }
 

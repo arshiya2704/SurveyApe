@@ -33,6 +33,26 @@ public class UserResource {
         return userRepository.findAll();
     }
 
+    @PostMapping(value = "/verify")
+    public ResponseEntity <ServiceResponse> verify(@RequestBody final User user){
+
+        System.out.println("**************");
+        System.out.println(user.getEmail());
+        System.out.println(user.getVerified());
+        ServiceResponse r=new ServiceResponse();
+        User u = userRepository.findByEmail(user.getEmail());
+        if(user.getVerified().equals(u.getVerified())) {
+            r.setMessage("true");
+            u.setVerified("0");
+            userRepository.save(u);
+            sendConfirmation (u.getEmail());
+        }
+        else
+            r.setMessage("false");
+        return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <ServiceResponse> login(@RequestBody final User user) {
 
@@ -55,13 +75,13 @@ public class UserResource {
                 r.setMessage("Incorrect Password!!");
                 return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            else if(u.getVerified()!=0){
-                    System.out.println("Verify first!!");
-                    ServiceResponse r=new ServiceResponse();
-                    r.setMessage("Verify first!!");
-                    return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-                else{
+            else if(!u.getVerified().equals("0")){
+                System.out.println("Verify first!!");
+                ServiceResponse r=new ServiceResponse();
+                r.setMessage("Verify first!!");
+                return new ResponseEntity<ServiceResponse>(r, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            else{
                 System.out.println("logged In!!");
                 ServiceResponse r=new ServiceResponse();
                 r.setMessage("logged in");
@@ -118,20 +138,7 @@ public class UserResource {
 
 
 
-    @GetMapping(value = "/verify")
-    public String verifyUser(@RequestParam("uname") String uname, @RequestParam("code") Integer code) {
-        User a = userRepository.findByEmail(uname);
 
-        if(a.getVerified() == code) {
-
-            a.setVerified(0);
-            //System.out.println(uname);
-            userRepository.save(a);
-            sendConfirmation (a.getEmail());
-            return "success";
-        }
-        return "verify again";
-    }
 
 
     @PostMapping(value = "/register")
@@ -142,12 +149,20 @@ public class UserResource {
         System.out.println(user.getLastname());
         System.out.println(user.getPwd());
         System.out.println(user.getEmail());
+        System.out.println("I m here"+userRepository.findByEmail(user.getEmail()));
+        if (userRepository.findByEmail(user.getEmail())!=null)
+        {
+            System.out.println("check");
+            ServiceResponse r = new ServiceResponse();
+            r.setMessage("User already exists!! Please login.");
+            return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
+        }
         Random rand = new Random();
 
 
         User u = new User();
         u.setEmail(user.getEmail());
-        u.setVerified(rand.nextInt(9999));
+        u.setVerified(1000+rand.nextInt(8999)+"");
         u.setFirstname(user.getFirstname());
         u.setLastname(user.getLastname());
         u.setPwd(user.getPwd());
@@ -161,9 +176,9 @@ public class UserResource {
         return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
     }
 
-    public static void sendEmail(String uname,int code) {
-        final String username = "anshitanshit123@gmail.com";
-        final String password = "surveyape";
+    public static void sendEmail(String uname,String code) {
+        final String username = "surveyape07@gmail.com";
+        final String password = "SurveyApe";
         //properties
         Properties pro = new Properties();
         pro.put("mail.smtp.auth", "true");
@@ -180,13 +195,14 @@ public class UserResource {
         try {
             //send
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("anshitanshit123@gmail.com"));
+            message.setFrom(new InternetAddress("surveyape07@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, //use uname
                     InternetAddress.parse(uname));
             //compose
-            message.setSubject("Verify the Email");
-            message.setText("fin,"
-                    + "Visit http://localhost:8080/users/verify?uname="+uname+"&code="+code);  ///verify/"+uanme
+            message.setSubject("Successfully Registered");
+            message.setText(
+                    "Visit http://localhost:3000 for verifying your email address" +
+                            "Enter code : "+code);
             Transport.send(message);
             System.out.println("Done");
         } catch (MessagingException e) {
@@ -198,8 +214,8 @@ public class UserResource {
 
 
     public static void sendConfirmation(String uname) {
-        final String username = "anshitanshit123@gmail.com";
-        final String password = "surveyape";
+        final String username = "surveyape07@gmail.com";
+        final String password = "SurveyApe";
         //properties
         Properties pro = new Properties();
         pro.put("mail.smtp.auth", "true");
@@ -216,14 +232,13 @@ public class UserResource {
         try {
             //send
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("anshitanshit123@gmail.com"));
+            message.setFrom(new InternetAddress("surveyape07@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, //use uname
                     InternetAddress.parse(uname));
             //compose
-            message.setSubject("Verify the Email");
-            message.setText("fin,"
-                    + "Welcome to SurveyApe." +
-                    "For login: localhost:3000 ");  ///verify/"+uanme
+            message.setSubject("Successfully Verified");
+            message.setText( "Welcome to SurveyApe." +
+                    "For login enter : localhost:3000 ");  ///verify/"+uanme
             Transport.send(message);
             System.out.println("Done");
         } catch (MessagingException e) {
@@ -233,7 +248,3 @@ public class UserResource {
 
 
 }
-
-
-
-

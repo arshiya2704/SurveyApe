@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import {Link,withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import '../App.css';
 import * as API from '../api/API';
-import img from '../img2.png';
+
 import Question from "./Question";
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Navbar from "./Navbar";
-import File from "./File";
 import 'react-datepicker/dist/react-datepicker.css';
 import {reactLocalStorage} from 'reactjs-localstorage';
 
@@ -18,7 +16,7 @@ class Home extends Component {
     // };
 
     constructor(props) {
-        super(props);
+       super(props);
         this.state = {
             survey: {
                 name: '',
@@ -70,7 +68,14 @@ class Home extends Component {
 
     init() {
         console.log("component check");
-        //alert(reactLocalStorage.getObject('var'));
+        const check= JSON.stringify(reactLocalStorage.getObject('var'));
+        if(check === JSON.stringify({})){
+            //alert("Please login to continue");
+            window.location="/";
+            //this.props.history.push("/");
+        }
+
+        //if(reactLocalStorage.getObject('var'))
         console.log('user'+this.props.tag);
         API.getSurveys({"email":reactLocalStorage.getObject('var')})
             .then((data) => {
@@ -119,6 +124,11 @@ class Home extends Component {
         }, 500)
     };
 
+    logOut(){
+        localStorage.clear();
+        this.props.history.push("/");
+    }
+
 
 
     render() {
@@ -129,6 +139,15 @@ class Home extends Component {
             backgroundColor:"#FFFFFF",
             backgroundSize: "100%"
         };
+        var buttons1={
+            width:"770px",
+            // height:"500px",
+            minHeight:"60px",
+            backgroundColor:"#FFFFFF",
+            backgroundSize: "100%",
+            marginTop:"97px",
+            marginLeft:"297px"
+        };
 
         var style={
             // marginTop: "180px",
@@ -138,7 +157,7 @@ class Home extends Component {
         };
         var style1={
             // marginTop: "180px",
-            backgroundColor: "#E6E6FA",
+            backgroundColor: "#e4dbf6",
             //height: "600px",
             minHeight:"600px",
             backgroundSize: "100%"
@@ -149,7 +168,12 @@ class Home extends Component {
             width:"650px"
         };
         var style3={
-            float:"right"
+            float:"right",
+            // margin:"20px",
+            marginTop:"-20px",
+            marginRight:"40px",
+            backgroundColor:"white",
+            //textColor:"#FF4500"
         };
         var style4={
             float:"left",
@@ -161,13 +185,19 @@ class Home extends Component {
         var style5={
             float:"left"
         };
-        var fileStyle1={
-            float:'left',
-            color: 'skyblue',
-            marginRight: '10px',
-            marginLeft: '10px',
-            padding: '3px',
-            fontSize: '20px'
+        var style6={
+            float:'right',
+            margin:"20px",
+            backgroundColor:"#FF4500",
+            textColor:"#D8BFD8"
+        };
+
+        var style7={
+            color: "#8A2BE2"
+        };
+
+        var style8={
+            color: "#FFF"
         };
 
 
@@ -176,7 +206,21 @@ class Home extends Component {
                 <div className="row" style={style}>
                     {/*<button style={style3} className="btn btn-primary" onClick={() => this.addSurvey(this.state)}>Send</button>*/}
                     <div className="dropdown">
-                        <button style={style3} className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Send
+                        <button style={style6} className="btn btn-circle dropdown-toggle" id="menu1" type="button"  data-toggle="dropdown"><text style={style8}>{reactLocalStorage.getObject('var').charAt(0).toUpperCase()}</text>
+                        </button>
+                        <br/>
+                        <br/>
+                        <ul className="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1" >
+                            {/*<img src ={dropbox} className="img-responsive" alt="profile"/>*/}
+                            {reactLocalStorage.getObject('var')}
+                            <br/>
+                            <li role="presentation" class="divider"></li>
+                            <button type="button" className="btn btn-light" onClick={() => this.logOut()}>Sign out</button>
+                        </ul>
+                    </div>
+
+                    <div className="dropdown" >
+                        <button style={style3} className="btn dropdown-toggle" type="button" data-toggle="dropdown"><text style={style7}>SEND</text>
                             <span className="caret"></span></button>
                         <ul className="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1" >
                             {/*<div className="radio-group">*/}
@@ -237,6 +281,9 @@ class Home extends Component {
                             {/*</div>*/}
 
                         </ul>
+                    </div>
+                    <div className="col-md-6 col-md-offset-1 col-sm-6 col-sm-offset-1 col-xs-6" style={buttons1}>
+                        SurveyApe
                     </div>
                 </div>
                 <div className="row" style={style1}>

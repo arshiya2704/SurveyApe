@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as API from '../api/API';
-import {Route,withRouter,Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 class NavbarShow extends Component {
 

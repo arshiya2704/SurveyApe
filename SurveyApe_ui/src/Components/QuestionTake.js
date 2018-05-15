@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import * as API from '../api/API';
-import {Route,withRouter,Link} from 'react-router-dom';
+
+import {withRouter} from 'react-router-dom';
 import Rating from 'react-star-rating-meter';
 import {reactLocalStorage} from 'reactjs-localstorage';
 
@@ -67,23 +67,7 @@ class QuestionTake extends Component {
 
         render()
         {
-            var buttons = {
-                width: "770px",
-                height: "500px",
-                backgroundColor: "#FFFFFF",
-            };
 
-            var style = {
-                // marginTop: "180px",
-                backgroundColor: "#8A2BE2",
-                height: "200px",
-                position: "center"
-            };
-            var style1 = {
-                // marginTop: "180px",
-                backgroundColor: "#E6E6FA",
-                height: "600px"
-            };
             var style2 = {
                 border: "none",
                 float: "left",
@@ -94,22 +78,7 @@ class QuestionTake extends Component {
                 float: "left",
                 width: "500px"
             };
-            var style4 = {
-                float: "right"
-            };
-            var style5 = {
-                width: "200px",
-                float: "left",
-                border: "none"
-            };
-            var fileStyle1 = {
-                float: 'left',
-                color: 'skyblue',
-                marginRight: '10px',
-                marginLeft: '10px',
-                padding: '3px',
-                fontSize: '20px'
-            };
+
             let svgHeart = {
                 path: "M11.608,21.997c-22.647-12.354-6.268-27.713,0-17.369C17.877-5.716,34.257,9.643,11.608,21.997z",
                 viewBox: "0 0 23.217 21.217"

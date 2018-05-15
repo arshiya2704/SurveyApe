@@ -7,24 +7,42 @@ import Home from "./Home"
 import Survey from "./Survey"
 import ShowSurvey from "./ShowSurvey"
 import {reactLocalStorage} from 'reactjs-localstorage';
+import Verify from "./Verify"
+
 
 // reactLocalStorage.set('var', true);
 // reactLocalStorage.get('var', true);
 
 
-class Login extends Component {
+class Welcome extends Component {
     constructor() {
         super();
         this.state = {
             tag:'',
             userData: {
                 email: '',
-                password: ''
+                password: '',
+                code1:'',
+                code2:'',
+                code3:'',
+                code4:''
             },
 
-        }};
+        };
+        this.init();
+
+    };
 
 
+    init(){
+        alert("Welcome page");
+        // const check= JSON.stringify(reactLocalStorage.getObject('var'));
+        // if(check !== JSON.stringify({})){
+        //      window.location="/home";
+        //     // window.location.reload(1);
+        //     //this.props.history.push("/home");
+        // }
+    }
 
     handleChange (propertyName, event) {
         const userData = this.state.userData;
@@ -40,14 +58,21 @@ class Login extends Component {
             API.login(userdata)
                 .then((res) => {
                     console.log(res);
-                    if (res.message === 'logged in'){
-                        reactLocalStorage.setObject('var',  'arshiyasethi04@gmail.com');
+                    if(res.message ==='Verify first!!'){
+                        alert(res.message);
+                        this.props.history.push({
+                            pathname: '/verify',
+                            state: { tag: userdata.userData.email }
+                        });
+                    }
+                    else if (res.message === 'logged in'){
+                        reactLocalStorage.setObject('var',  userdata.userData.email);
 
                         this.setState(
                             {
                                 tag : res.email
                             });
-                        this.props.history.push("home");
+                        //this.props.history.push("home");
                     }
                     else alert(res.message);
                 });
@@ -57,12 +82,17 @@ class Login extends Component {
         }
     };
 
+
+
+
     render() {
+
         return (
             <div className="container-fluid">
                 <Route exact path="/" render={() => (
                     <div className="background">
                         <div className="row">
+                            {/*<button type="submit" style={style1} id="verify" className="btn btn-warning" data-toggle="modal" data-target="#myModal1" onClick={(e) => (e.preventDefault())}></button>*/}
                             <div className="text-center">
                                 <button className="background-btn" id="menu1" type="button" data-toggle="modal" data-target="#myModal">
                                 Go to Google Forms
@@ -98,7 +128,7 @@ class Login extends Component {
                 )}/>
                 <Route exact path="/home" render={() => (
                     <div>
-                        <Home tag={this.state.tag}/>
+                        <Home/>
                     </div>
                 )}/>
                 <Route exact path="/takesurvey" render={() => (
@@ -111,9 +141,14 @@ class Login extends Component {
                         <ShowSurvey/>
                     </div>
                 )}/>
+                <Route exact path="/verify" render={() => (
+                    <div>
+                        <Verify/>
+                    </div>
+                )}/>
             </div>
         );
     }
 }
 
-export default withRouter(Login);
+export default withRouter(Welcome);
