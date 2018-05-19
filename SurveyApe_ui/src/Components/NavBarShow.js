@@ -74,7 +74,7 @@ class NavbarShow extends Component {
         var style4={
             float:"left",
             width:"180px",
-            backgroundColor:"#D8BFD8",
+            backgroundColor:"#e9e2f8",
             backgroundSize:"100%",
             minHeight:"600px"
         };

@@ -50,6 +50,7 @@ class QuestionShow extends Component {
                 <textarea
                     style={style2}
                     placeholder="Enter Text"
+                    disabled={true}
                 />
                     <br/>
                     <br/>
@@ -84,7 +85,7 @@ class QuestionShow extends Component {
                         <br/>
                         <br/>
                         <button style={style5} className="btn">
-                            <input type="radio"></input>
+                            <input type="radio" disabled={true}></input>
                         </button>
                         <input
                             value={option.options.split(";")[0]}
@@ -94,7 +95,7 @@ class QuestionShow extends Component {
                         <br/>
                         <br/>
                         <button style={style5} className="btn">
-                            <input type="radio"></input>
+                            <input type="radio" disabled={true}></input>
                         </button>
                         <input
                             value={option.options.split(";")[1]}
@@ -104,7 +105,7 @@ class QuestionShow extends Component {
                         <br/>
                         <br/>
                         <button style={style5} className="btn">
-                            <input type="radio"></input>
+                            <input type="radio" disabled={true}></input>
                         </button>
                         <input
                             value={option.options.split(";")[2]}
@@ -114,7 +115,7 @@ class QuestionShow extends Component {
                         <br/>
                         <br/>
                         <button style={style5} className="btn">
-                            <input type="radio"></input>
+                            <input type="radio" disabled={true}></input>
                         </button>
                         <input
                             value={option.options.split(";")[3]}

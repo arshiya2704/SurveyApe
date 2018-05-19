@@ -178,10 +178,10 @@ public class SurveyResource {
     }
 
     @PostMapping(value="/getSurvey")
-    public ArrayList<Question> getSurvey (@RequestBody final Survey obj) {
-        System.out.println("i am here"+ obj.getName());
+    public ArrayList<Question> getSurvey (@RequestBody final Question obj) {
+        System.out.println("i am here"+ obj.getSname());
 
-        return qr.findAllBySname(obj.getName());
+        return qr.findAllBySname(obj.getSname());
     }
 
     @PostMapping(value="/getUniqueSurvey")
@@ -226,7 +226,7 @@ public class SurveyResource {
 
     @PostMapping(value = "/getSurveys")
     public ArrayList<String> getSurveys(@RequestBody final User email){
-       // System.out.println(sr.findAllByEmail(email));
+       System.out.println("hit1");
         //return (sr.findAllByEmail(email)).getSname();
         System.out.println(email);
         ArrayList<Survey> obj =  sr.findAllByEmail(email.getEmail());
@@ -240,6 +240,7 @@ public class SurveyResource {
         System.out.println(out);
         return out;
     }
+    
 
 
 }

@@ -35,7 +35,7 @@ class Welcome extends Component {
 
 
     init(){
-        alert("Welcome page");
+        //alert("Welcome page");
         // const check= JSON.stringify(reactLocalStorage.getObject('var'));
         // if(check !== JSON.stringify({})){
         //      window.location="/home";
@@ -72,7 +72,7 @@ class Welcome extends Component {
                             {
                                 tag : res.email
                             });
-                        //this.props.history.push("home");
+                        this.props.history.push("home");
                     }
                     else alert(res.message);
                 });

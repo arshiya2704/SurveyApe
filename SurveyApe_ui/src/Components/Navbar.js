@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import * as API from '../api/API';
 import {withRouter} from 'react-router-dom';
+import {reactLocalStorage} from 'reactjs-localstorage';
 
 class Navbar extends Component {
 
@@ -48,6 +49,8 @@ class Navbar extends Component {
             });
     }
 
+
+
     // init() {
     //     console.log("component check");
     //
@@ -68,6 +71,7 @@ class Navbar extends Component {
             backgroundSize:"100%",
             minHeight:"600px"
         };
+
         const surveys= this.props.surveyList;
         const optionList= surveys.map((option) =>  <div>
                 <button className="btn btn-link" onClick={() => this.showSurvey(option)}>{option}</button>
@@ -77,9 +81,6 @@ class Navbar extends Component {
         );
         return (
             <div style={style4}>
-                <button className="btn btn-default btn-circle" onClick={() => this.addSur}>+</button>
-                <text>My Posted Surveys:</text>
-                <hr/>
                 {optionList}
 
             </div>

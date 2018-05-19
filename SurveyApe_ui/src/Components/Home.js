@@ -6,6 +6,7 @@ import * as API from '../api/API';
 import Question from "./Question";
 import moment from 'moment';
 import Navbar from "./Navbar";
+import NavbarRight from "./NavBarRight";
 import 'react-datepicker/dist/react-datepicker.css';
 import {reactLocalStorage} from 'reactjs-localstorage';
 
@@ -27,7 +28,8 @@ class Home extends Component {
                 end:moment(),
                 email:reactLocalStorage.getObject('var')
             },
-            surveyList:[]
+            surveyList:[],
+            surveyList2:[]
 
         };
         this.init();
@@ -84,6 +86,14 @@ class Home extends Component {
                     surveyList: data
                 });
             });
+
+        API.getGeneralSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data1) => {
+                console.log(data1);
+                // this.setState({
+                //     surveyList2: data1
+                // });
+            });
     }
 
     addQue(){
@@ -124,10 +134,77 @@ class Home extends Component {
         }, 500)
     };
 
+    saveSurvey = (survey) => {
+        const interSurvey={
+            name: survey.name,
+            questions:survey.questions,
+            email:survey.email
+        };
+        API.saveSurvey(interSurvey)
+            .then((res) => {
+                console.log(res);
+                alert('Survey saved successfully!!');
+                // window.location.reload();
+            });
+        setTimeout(function(){
+            window.location.reload(1);
+        }, 500)
+    };
+
+
     logOut(){
         localStorage.clear();
         this.props.history.push("/");
     }
+
+    getPublishedSurveys(){
+        console.log("component check");
+
+        API.getSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    surveyList: data
+                });
+            });
+    }
+
+    getSavedSurveys(){
+        console.log("component check");
+
+        API.getSavedSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    surveyList: data
+                });
+            });
+    }
+
+    getGeneralSurveys(){
+        console.log("component check");
+
+        API.getGeneralSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    surveyList2: data
+                });
+            });
+    }
+
+    getOpenSurveys(){
+        console.log("component check");
+
+        API.getOpenSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    surveyList2: data
+                });
+            });
+    }
+
 
 
 
@@ -165,7 +242,7 @@ class Home extends Component {
         var style2={
           border:"none",
             float:"left",
-            width:"650px"
+            width:"550px"
         };
         var style3={
             float:"right",
@@ -198,6 +275,40 @@ class Home extends Component {
 
         var style8={
             color: "#FFF"
+        };
+
+        var style9={
+          margin:"10px"
+        };
+
+        var style10={
+            float:"right",
+            width:"180px",
+            backgroundColor:"#D8BFD8",
+            backgroundSize:"100%",
+            minHeight:"600px"
+        };
+
+        var nav={
+            float:"left",
+            width:"180px",
+            backgroundColor:"#e9e2f8",
+            backgroundSize:"100%",
+            minHeight:"600px"
+        };
+
+        var navstyle3={
+            //float:"right",
+            // margin:"20px",
+            //marginTop:"-20px",
+            //marginRight:"40px",
+            backgroundColor:"white",
+            width:"90px",
+            active:true
+            //textColor:"#FF4500"
+        };
+        var navstyle7={
+            color: "#8A2BE2"
         };
 
 
@@ -287,7 +398,12 @@ class Home extends Component {
                     </div>
                 </div>
                 <div className="row" style={style1}>
-                    <div style={style4}>
+                    <div style={nav}>
+                        <button className="btn btn-default btn-circle" onClick={() => this.addSur}>+</button>
+                        <text>My Created Surveys:</text><br/><br/>
+                        <button style={navstyle3} className="btn" type="button" onClick={() => this.getPublishedSurveys}><text style={navstyle7}>Published</text></button>
+                        <button style={navstyle3} className="btn" type="button" onClick={() => this.getSavedSurveys}><text style={navstyle7}>Saved</text></button>
+                        <hr/>
                         <Navbar surveyList={this.state.surveyList}/>
                     </div>
                     <div className="col-md-6 col-md-offset-1 col-sm-6 col-sm-offset-1 col-xs-6" style={buttons}>
@@ -298,6 +414,7 @@ class Home extends Component {
                                     style={style2}
                                     placeholder="Form Name"
                                 />
+                                <button className="btn btn-primary" style={style9} onClick={(e) => (e.preventDefault(), this.saveSurvey(this.state))}>Save</button>
                                 <button className="btn btn-primary" onClick={(e) => (e.preventDefault(), this.addQue())}>+</button>
                                 <br/>
                                 <br/>
@@ -311,6 +428,15 @@ class Home extends Component {
                                 {this.state.survey.questions.map((item,index)  => <Question index={index} sname={this.state.survey.name} handleQueArr={this.handleQueArr} />)}
                             </div>
                         </form>
+                    </div>
+                    <div style={style10}>
+                        <div style={nav}>
+                            <text>Invited Surveys:</text><br/><br/>
+                            <button style={navstyle3} className="btn" type="button" onClick={() => this.getGeneralSurveys}><text style={navstyle7}>General</text></button>
+                            <button style={navstyle3} className="btn" type="button" onClick={() => this.getOpenSurveys}><text style={navstyle7}>Open</text></button>
+                            <hr/>
+                            <NavbarRight surveyList2={this.state.surveyList2}/>
+                        </div>
                     </div>
                 </div>
             </div>
