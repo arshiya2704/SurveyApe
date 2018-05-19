@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import * as API from '../api/API';
 import {withRouter} from 'react-router-dom';
 
-class NavbarRight extends Component {
+class NavbarRightShow extends Component {
 
     constructor() {
         super();
@@ -34,7 +34,7 @@ class NavbarRight extends Component {
                     formname: surName
                 },() => { this.props.history.push(
                     {
-                        pathname: "takesurvey/"+surName,
+                        pathname: "/takesurvey/"+surName,
                         state: { questions: this.state.questions,
                             formname:this.state.formname}
                     });
@@ -90,4 +90,4 @@ class NavbarRight extends Component {
 }
 
 
-export default withRouter(NavbarRight);
+export default withRouter(NavbarRightShow);

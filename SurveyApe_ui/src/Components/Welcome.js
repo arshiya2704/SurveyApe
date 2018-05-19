@@ -6,8 +6,10 @@ import Register from "./Register"
 import Home from "./Home"
 import Survey from "./Survey"
 import ShowSurvey from "./ShowSurvey"
+import TakeSurvey from "./TakeSurvey"
 import {reactLocalStorage} from 'reactjs-localstorage';
 import Verify from "./Verify"
+import Stats from "./Stats"
 
 
 // reactLocalStorage.set('var', true);
@@ -139,6 +141,16 @@ class Welcome extends Component {
                 <Route exact path="/showsurvey/:formname" render={() => (
                     <div>
                         <ShowSurvey/>
+                    </div>
+                )}/>
+                <Route exact path="/showsurvey/:formname/stats" render={() => (
+                    <div>
+                        <Stats/>
+                    </div>
+                )}/>
+                <Route exact path="/takesurvey/:formname" render={() => (
+                    <div>
+                        <TakeSurvey/>
                     </div>
                 )}/>
                 <Route exact path="/verify" render={() => (

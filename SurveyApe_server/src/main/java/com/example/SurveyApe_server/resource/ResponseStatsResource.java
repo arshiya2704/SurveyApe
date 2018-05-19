@@ -35,7 +35,7 @@ public class ResponseStatsResource {
 	@Autowired
 	UserRepository ur;
 
-	@PostMapping(value="/stats")
+	@PostMapping(value="/showStats")
 	public @ResponseBody ResponseStats addResponse (@RequestBody Survey survey) {
 		ResponseStats obj=new ResponseStats();
 		obj.setSname(survey.getName());

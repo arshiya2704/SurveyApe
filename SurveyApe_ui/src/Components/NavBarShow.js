@@ -15,7 +15,7 @@ class NavbarShow extends Component {
             opt4:'',
             description:''
         };
-        this.addSur=this.addSur.bind(this);
+        //this.addSur=this.addSur.bind(this);
         //this.init();
         // this.handleChange = this.handleChange.bind(this);
         // this.submitHandler = this.submitHandler.bind(this);
@@ -23,12 +23,7 @@ class NavbarShow extends Component {
     };
 
 
-    addSur(e){
 
-        //e.preventDefault();
-        console.log("I am working");
-        window.location='/home';
-    }
 
 
     showSurvey(surName){
@@ -87,9 +82,6 @@ class NavbarShow extends Component {
         );
         return (
             <div style={style4}>
-                <button className="btn btn-default btn-circle" onClick={this.addSur}>+</button>
-                <text>My Posted Surveys:</text>
-                <hr/>
                 {optionList}
 
             </div>

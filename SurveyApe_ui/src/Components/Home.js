@@ -29,7 +29,7 @@ class Home extends Component {
                 email:reactLocalStorage.getObject('var')
             },
             surveyList:[],
-            surveyList2:[]
+            surveyList2:["ans"]
 
         };
         this.init();

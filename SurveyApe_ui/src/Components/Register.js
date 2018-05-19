@@ -55,9 +55,9 @@ class Register extends Component {
                     //alert(res.message);
                    // this.props.history.push("/verify");
                 });}
-        setTimeout(function(){
-            window.location.reload(1);
-        }, 500)
+        // setTimeout(function(){
+        //     window.location.reload(1);
+        // }, 500)
     };
 
     handleSubmit1 = (formdata) => {

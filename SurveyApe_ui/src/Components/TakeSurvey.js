@@ -4,11 +4,9 @@ import '../App.css';
 import * as API from '../api/API';
 import QuestionShow from "./QuestionShow";
 import NavBarShow from "./NavBarShow";
-import NavBarRightShow from "./NavBarRightShow";
 import {reactLocalStorage} from 'reactjs-localstorage';
-import Stats from "./Stats"
 
-class ShowSurvey extends Component {
+class TakeSurvey extends Component {
 
     constructor(props) {
         super(props);
@@ -17,10 +15,9 @@ class ShowSurvey extends Component {
             ],
             formname:'',
             surveyList:[],
-            surveyList2:["ans"],
+            surveyList2:[],
             addInvitees:'',
-            newEndDate:'',
-            resData:{}
+            newEndDate:''
         };
         this.init();
         this.addSur=this.addSur.bind(this);
@@ -55,86 +52,16 @@ class ShowSurvey extends Component {
             });
 
     };
-
     stats= (formName) =>{
         console.log(formName);
         API.stats({formname:formName})
             .then((res) => {
-            console.log(res);
-            const val={
-                "sname": "form1",
-                "questions": [
-                    {
-                        "id": 1,
-                        "sname": "form1",
-                        "qtype": "mcqS",
-                        "description": "kjalf",
-                        "options": "a;b;c;d"
-                    },
-                    {
-                        "id": 2,
-                        "sname": "form1",
-                        "qtype": "mcqS",
-                        "description": "arun",
-                        "options": "a;b;c;d"
-                    }
-                ],
-                "publish": null,
-                "end": null,
-                "no_of_submission": 4,
-                "participation_rate": 0.5,
-                "answers": [
-                    {
-                        "question": {
-                            "id": 1,
-                            "sname": "form1",
-                            "qtype": "mcqS",
-                            "description": "kjalf",
-                            "options": "a;b;c;d"
-                        },
-                        "map": {
-                            "a": 2,
-                            "c": 2,
-                            "d": 1
-                        }
-                    },
-                    {
-                        "question": {
-                            "id": 2,
-                            "sname": "form1",
-                            "qtype": "mcqS",
-                            "description": "arun",
-                            "options": "a;b;c;d"
-                        },
-                        "map": {}
-                    },
-                    {
-                        "question": {
-                            "id": 3,
-                            "sname": "form1",
-                            "qtype": "text",
-                            "description": "que3",
-                            "options": ";;;;"
-                        },
-                        "map": {"hello":1,
-                        "hi":1}
-                    }
-                ]
-            };
-            //res.no_of_submission=3;
-                if(val.answers.length<=2){
-                    alert("Oops!! Less than 2 responses")
-                }
-                else{
-                    this.setState({
-                        resData: val
-                    },() => { this.props.history.push(
-                        {
-                            pathname: formName+"/stats",
-                            state: { resData: this.state.resData}
-                        });
-                    });
-                }
+                // if (res.status === 200) {
+                //     setTimeout(function(){
+                //         window.location.reload(1);
+                //     }, 2000)
+                //
+                // }
             });
 
     };
@@ -142,8 +69,8 @@ class ShowSurvey extends Component {
     editDate= (val) =>{
         console.log(val);
         const value={
-            end:val.newEndDate,
-            name:val.formname
+                end:val.newEndDate,
+                name:val.formname
             }
         ;
         API.edit(value)
@@ -180,13 +107,13 @@ class ShowSurvey extends Component {
     init() {
         console.log("component showsurvey check");
 
-       // var mytext= this.getUrlParam('sname','Empty');
-       //  $('.dropdown-menu').click(function(e) {
-       //      e.stopPropagation();
-       //      if ($(e.target).is('[data-toggle=modal]')) {
-       //          $($(e.target).data('target')).modal()
-       //      }
-       //  });
+        // var mytext= this.getUrlParam('sname','Empty');
+        //  $('.dropdown-menu').click(function(e) {
+        //      e.stopPropagation();
+        //      if ($(e.target).is('[data-toggle=modal]')) {
+        //          $($(e.target).data('target')).modal()
+        //      }
+        //  });
 
         API.getSurveys({"email":reactLocalStorage.getObject('var')})
             .then((data) => {
@@ -240,7 +167,29 @@ class ShowSurvey extends Component {
             });
     }
 
+    getGeneralSurveys(){
+        console.log("component check");
 
+        API.getGeneralSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    surveyList2: data
+                });
+            });
+    }
+
+    getOpenSurveys(){
+        console.log("component check");
+
+        API.getOpenSurveys({"email":reactLocalStorage.getObject('var')})
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    surveyList2: data
+                });
+            });
+    }
 
     handleChange1 (propertyName, event) {
         event.preventDefault();
@@ -294,12 +243,12 @@ class ShowSurvey extends Component {
             width:"650px"
         };
         var style3={
-          margin:"4px",
-          //size:"180px"
+            margin:"4px",
+            //size:"180px"
             color: "#8A2BE2"
         };
         var style4={
-          width:"530px"
+            width:"530px"
         };
         var style5={
             float:"left",
@@ -392,58 +341,6 @@ class ShowSurvey extends Component {
                                     style={style2}
                                     disabled={true}
                                 />
-                                <span style={style3} className="glyphicon glyphicon-trash" aria-hidden="true" role="button" data-toggle="modal"  data-target="#myModal_delete"></span>
-                                <div className="modal fade" id="myModal_delete" role="dialog">
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                                <h4 className="modal-title">Are you sure you want to unpublish {this.state.formname}?</h4>
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => this.delete(this.state.formname)} >Unpublish</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span style={style3} className="glyphicon glyphicon-edit" aria-hidden="true" role="button" data-toggle="modal"  data-target="#myModal_edit"></span>
-                                <div className="modal fade" id="myModal_edit" role="dialog">
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                                <h4 className="modal-title">Extend end date</h4>
-                                            </div>
-                                            <div className="modal-body">
-                                                <input type="date"
-                                                       placeholder="New End Date" onChange={this.handleChange1.bind(this, 'newEndDate')} />
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => this.editDate(this.state)} >Extend</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span style={style3} className="glyphicon glyphicon-envelope" aria-hidden="true" role="button" data-toggle="modal"  data-target="#myModal_invite"></span>
-                                <div className="modal fade" id="myModal_invite" role="dialog">
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                                <h4 className="modal-title">Add invitees emails separated by semi-colon</h4>
-                                            </div>
-                                            <div className="modal-body">
-                                                <textarea style={style4} placeholder="Enter ; separated email id's" type="text" onChange={this.handleChange1.bind(this, 'addInvitees')}></textarea>
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => this.send(this.state)} >Send</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <span style={style3} className="glyphicon glyphicon-stats" aria-hidden="true" role="button" onClick={() => this.stats(this.props.location.state.formname)}></span>
                                 <br/>
                                 <br/>
                                 <hr/>
@@ -452,15 +349,6 @@ class ShowSurvey extends Component {
                                 {/*{this.state.survey.questions.map((item,index)  => <QuestionShow arr={this.state.questions} />)}*/}
                             </div>
                         </form>
-                    </div>
-                    <div style={style10}>
-                        <div style={nav}>
-                            <text>Invited Surveys:</text><br/><br/>
-                            <button style={navstyle3} className="btn" type="button" onClick={() => this.getGeneralSurveys}><text style={navstyle7}>General</text></button>
-                            <button style={navstyle3} className="btn" type="button" onClick={() => this.getOpenSurveys}><text style={navstyle7}>Open</text></button>
-                            <hr/>
-                            <NavBarRightShow surveyList2={this.state.surveyList2}/>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -472,4 +360,4 @@ class ShowSurvey extends Component {
 }
 
 
-export default withRouter(ShowSurvey);
+export default withRouter(TakeSurvey);
