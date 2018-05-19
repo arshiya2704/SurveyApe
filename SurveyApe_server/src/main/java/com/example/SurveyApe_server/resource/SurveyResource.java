@@ -34,39 +34,6 @@ public class SurveyResource {
     UserRepository ur;
 
 
-//    @PostMapping(value="/addSurvey")
-//    public @ResponseBody ResponseEntity<?>  addSurvey (@RequestBody final Complete obj) {
-//
-//        System.out.println("check here");
-//        System.out.println(obj.getQuestions());
-//        sr.save(obj.getSurvey());
-//        qr.saveAll(obj.getQuestions());
-//        String link;
-////        if(obj.getSurvey().getType()=="1") {
-////            //send email to all users same link
-////            link = "http://localhost:8080/getSurvey/sname="+obj.getSurvey().getName();
-////        }
-////        else if (obj.getSurvey().getType()=="2") {
-////            //send email to all users with unique link
-////            link = "http://localhost:8080/getSurvey/sname="+obj.getSurvey().getName()+"&uname=arun"; //change user
-////        }
-////
-////        else {
-////            //ccheck if user is there then follow 1
-////            //else follow2
-////
-////            if (ur.findByEmail("arun")!=null) //check uname
-////                link = "http://localhost:8080/getSurvey/sname="+obj.getSurvey().getName();
-////            else
-////                link = "http://localhost:8080/getSurvey/sname="+obj.getSurvey().getName()+"&uname=arun";
-////        }
-////
-////        return link;
-//        ServiceResponse r = new ServiceResponse();
-//        r.setMessage("Survey Created Successfully!!");
-//        return new ResponseEntity<ServiceResponse>(r, HttpStatus.OK);
-//
-//    }
 
 
     @PostMapping(value="/addSurvey")
@@ -131,6 +98,7 @@ public class SurveyResource {
     }
 
     public static void sendEmail(String link,String uname) {
+    	link = link.replaceAll("\\s","+");
         final String username = "surveyape07@gmail.com";
         final String password = "SurveyApe";
         //properties
@@ -196,7 +164,7 @@ public class SurveyResource {
 
         System.out.println(y);
         if (survey.getUsers().contains(y)){
-            survey.setUsers(survey.getUsers().replace(y,"BB@gmail.com"));
+            survey.setUsers(survey.getUsers().replace(y,"*"));
             sr.save(survey);
             //survey.getUsers().replace(obj.getUser().getEmail(),"x@gmail.com");
             return qr.findAllBySname(survey.getName());
@@ -212,17 +180,6 @@ public class SurveyResource {
         //return sr.findAllBySname(sname);
 
     }
-//
-//    @GetMapping(value="/getSurvey")
-//    public ArrayList<Question> getSurvey1 (@RequestParam("sname") String sname,@RequestParam("uname") String uname ) {
-////        Survey obj = sr.findByName(sname);
-////        if(obj.getUsers().toLowerCase().contains(uname.toLowerCase()))
-////            return qr.findAllBySname(sname);
-////        else
-//            return null;
-////
-////
-//    }
 
     @PostMapping(value = "/getSurveys")
     public ArrayList<String> getSurveys(@RequestBody final User email){
